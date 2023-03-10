@@ -15,6 +15,7 @@ variable "proxmox_api_token_id" {
 
 variable "proxmox_api_token_secret" {
   type = string
+  sensitive = true
 }
 
 # Block with VM Template
@@ -23,7 +24,7 @@ source "proxmox" "ubuntu-server-ivan" {
     # Connect to proxmox
     proxmox_url = "${var.proxmox_api_url}"
     username = "${var.proxmox_api_token_id}"
-    password = "${var.proxmox_api_token_secret}"
+    token = "${var.proxmox_api_token_secret}"
     # Skip TLS
     insecure_skip_tls_verify = true
 
@@ -34,14 +35,14 @@ source "proxmox" "ubuntu-server-ivan" {
     template_description = "Ubuntu Server: Version IVAN"
 
     # Setting for OS VM
-    iso_file = "local:iso/ubuntu-20.04.2-live-server-amd64.iso"
+    iso_file = "local:iso/ubuntu-22.04.2-live-server-amd64.iso"
     iso_storage_pool = "local"
     unmount_iso = true
     qemu_agent = true
     os = "l26"
 
     # CPU VM
-    cores = "1"
+    cores = "2"
 
     # Memory VM
     memory = "2048"
@@ -50,7 +51,7 @@ source "proxmox" "ubuntu-server-ivan" {
     scsi_controller = "virtio-scsi-pci"
     disks {
       disk_size = "30G"
-      format = "qcow2"
+      format = "raw"
       storage_pool = "local-zfs"
       storage_pool_type = "zfs"
       type = "virtio"
@@ -63,6 +64,14 @@ source "proxmox" "ubuntu-server-ivan" {
       firewall = "false"
     }
 
+    # Cloud-init config
+    cloud_init = true
+    cloud_init_storage_pool = "local-lvm"
 
+    # SSH settings
+    ssh_username = "sadmin.ney"
+}
 
+build {
+  sources = ["source.proxmox.ubuntu-server-ivan"]
 }
