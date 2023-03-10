@@ -70,6 +70,21 @@ source "proxmox" "ubuntu-server-ivan" {
 
     # SSH settings
     ssh_username = "sadmin.ney"
+    
+    # Block with boot commands
+    boot_command = [
+        "c<wait>",
+        "linux /ivan/vmlinuz autoinstall ds=nocloud-net;s=http://{{.HTTPIP}}:{{.HTTPPort}}/",
+        "<enter><wait>",
+        "initrd /ivan/vmlinuz",
+        "<enter><wait>",
+        "boot",
+        "<enter>"
+      ]
+    boot_wait = "5s"
+
+    # Packer Setting for autoinstall
+    http_directory = "http"
 }
 
 build {
