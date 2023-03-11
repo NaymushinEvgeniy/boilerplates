@@ -3,7 +3,7 @@ autoinstall:
   version: 1
   locale: en_US
   keyboard:
-    layout: en
+    layout: us
   ssh:
     install-server: true
     allow-pw: true
@@ -11,7 +11,6 @@ autoinstall:
     ssh_quiet_keygen: true
     allow_public_ssh_keys: true
   packages:
-    - qemu-guest-agent
     - sudo
   storage:
     layout:

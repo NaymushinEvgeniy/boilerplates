@@ -73,13 +73,12 @@ source "proxmox" "ubuntu-server-ivan" {
     
     # Block with boot commands
     boot_command = [
-        "c<wait>",
-        "linux /ivan/vmlinuz autoinstall ds=nocloud-net;s=http://{{.HTTPIP}}:{{.HTTPPort}}/",
-        "<enter><wait>",
-        "initrd /ivan/vmlinuz",
-        "<enter><wait>",
-        "boot",
-        "<enter>"
+        "<esc><wait>",
+        "e<wait>",
+        "<down><down><down><end>",
+        "<bs><bs><bs><bs><wait>",
+        "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
+        "<F10><wait>"
       ]
     boot_wait = "5s"
 
