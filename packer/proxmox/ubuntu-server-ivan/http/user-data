@@ -26,5 +26,4 @@ autoinstall:
         lock-passwd: false
         sudo: ALL=(ALL) NOPASSWD:ALL
         shell: /bin/bash
-        passwd: test-Qwert3
-
+        passwd: packer

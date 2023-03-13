@@ -70,6 +70,7 @@ source "proxmox" "ubuntu-server-ivan" {
 
     # SSH settings
     ssh_username = "sadmin.ney"
+    ssh_password = "packer"
     
     # Block with boot commands
     boot_command = [
