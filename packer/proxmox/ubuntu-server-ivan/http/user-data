@@ -22,8 +22,9 @@ autoinstall:
     timezone: Europe/Moscow
   users:
     - name: sadmin
-      groups: [adm, sudo]
-      lock-passwd: false
+      groups: users, admin
+      lock-passwd: true
+      ssh-import-id: None
       sudo: ALL=(ALL) NOPASSWD:ALL
       shell: /bin/bash
       ssh_authorized_keys:

@@ -39,8 +39,10 @@ source "proxmox" "ubuntu-server-ivan" {
     template_description = "Ubuntu Server: Version IVAN"
 
     # Setting for OS VM
-    iso_file = "local:iso/ubuntu-22.04.2-live-server-amd64.iso"
+    iso_file = "local:iso/ubuntu-20.04.5-live-server-amd64.iso"
     iso_storage_pool = "local"
+    #iso_url = "https://releases.ubuntu.com/20.04/ubuntu-20.04.5-live-server-amd64.iso"
+    iso_checksum = "5035be37a7e9abbdc09f0d257f3e33416c1a0fb322ba860d42d74aa75c3468d4"
     unmount_iso = true
     qemu_agent = true
     os = "l26"
@@ -79,12 +81,11 @@ source "proxmox" "ubuntu-server-ivan" {
     
     # Block with boot commands
     boot_command = [
-        "<esc><wait>",
-        "e<wait>",
-        "<down><down><down><end>",
-        "<bs><bs><bs><bs><wait>",
-        "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
-        "<F10><wait>"
+        "<esc><wait><esc><wait>",
+        "<f6><wait><esc><wait>",
+        "<bs><bs><bs><bs><bs>",
+        "autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ",
+        "--- <enter>"
       ]
     boot_wait = "5s"
 
@@ -94,4 +95,19 @@ source "proxmox" "ubuntu-server-ivan" {
 
 build {
   sources = ["source.proxmox.ubuntu-server-ivan"]
+  name = "ubuntu-server-focal"
+
+  provisioner "shell" {
+        inline = [
+            "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
+            "sudo rm /etc/ssh/ssh_host_*",
+            "sudo truncate -s 0 /etc/machine-id",
+            "sudo apt -y autoremove --purge",
+            "sudo apt -y clean",
+            "sudo apt -y autoclean",
+            "sudo cloud-init clean",
+            "sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg",
+            "sudo sync"
+        ]
+    }
 }
