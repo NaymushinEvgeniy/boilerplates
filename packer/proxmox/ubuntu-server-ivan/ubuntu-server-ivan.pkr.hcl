@@ -18,8 +18,8 @@ variable "proxmox_api_token_secret" {
   sensitive = true
 }
 
-variable "ssh_password" {
-  type =string
+variable "password" {
+  type = string
 }
 
 # Block with VM Template
@@ -76,8 +76,8 @@ source "proxmox" "ubuntu-server-ivan" {
 
     # SSH settings
     ssh_username = "sadmin"
-    #ssh_password = "${var.ssh_password}"
-    ssh_private_key_file = "~/.ssh/cloud_init_rsa"
+    ssh_password = "${var.password}"
+    #ssh_private_key_file = "~/.ssh/cloud_init_rsa"
     
     # Block with boot commands
     boot_command = [
