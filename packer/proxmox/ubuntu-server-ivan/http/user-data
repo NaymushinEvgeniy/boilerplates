@@ -6,7 +6,7 @@ autoinstall:
     layout: us
   identity:
     hostname: ubuntu-server
-    password: "$6$zAFHeCTA56e9Z0p.$OVcVmryyJsqkwXg/W4vdwpIt1kwg2n2phcKXBWXOFxkeg4kecY8csXQw5zHSaZJ4MDVi/DPSAgO.zMWJuLqZ3/"
+    password: "$6$oP7npvuHbqQBaawM$fhB76s8DKf9UGu01Et0kLYsfTTridV7s/JTUg0/s0X4qAasavuzEHrNWfuhCvXiRgDBc5y0vwN7Vki7VcIFkL."
     username: sadmin
   ssh:
     install-server: true
@@ -25,11 +25,9 @@ autoinstall:
     runcmd:
       - [apt-get, update]
       - [apt-get, install, qemu-guest-agent]
+      - [systemctl, enable, qemu-guest-agent]
       - [systemctl, start, qemu-guest-agent]
-  users:
-    - name: packer
-      groups: users
-      lock-passwd: true
-      ssh-import-id: None
-      shell: /bin/bash
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDRk+3P2NdI5zfkKCYfI2b8diNgFsD/A+kxcuLirx2/8WEwK6UwcHse8EATRk/HyI7I/d3g0Qh4cGJiP7mdgq8R5R+bgtOxs8iWKYhQUZNfYKoZqyh+GT7KVkqjzTJDZanyAMS0y8x6OUsHA5lV0403czhB+8sPN/osHJ18uxaIaCG8ffh11E/3oTh9NEYRlD/RNGMVEIcBsKFTVUW6LrORVyLAmKapDsZCm95sSARVEjGUUHgSHnigrfaAVT/Xyi8z7cChT2MDb6StdtNeXn9s2u2jiQZd0ZhbBY37CXRv3eSA7/s5eyh8LH+nmPylAWfkTNQkSIXtrwaQwK34v1e48X7F4WBD/NEFDOUO3W7mTMr6NoojNczPtDOkO+9CtpvpsOMqkc1rAPUcCB/Gw5Dt3zREC8c22veU/TmweADI7kv8knsxZXIKhzzgsTcWU5Xemo7bp4Z35B5x1vhp4cEpskvceutzmsLoQNbJsT8eYlHg7r8dMiiZYXTpx2T1Ins=
+    users:
+      - name: packer
+        groups: users
+        lock-passwd: true
