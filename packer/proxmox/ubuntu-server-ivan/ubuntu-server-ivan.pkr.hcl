@@ -72,7 +72,7 @@ source "proxmox" "ubuntu-server-ivan" {
 
     # Cloud-init config
     cloud_init = true
-    cloud_init_storage_pool = "local-lvm"
+    cloud_init_storage_pool = "local"
 
     # SSH settings
     ssh_username = "sadmin"
