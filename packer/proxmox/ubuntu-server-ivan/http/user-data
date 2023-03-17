@@ -24,6 +24,10 @@ autoinstall:
   user-data:
     package_upgrade: false
     timezone: Europe/Moscow
+    runcmd:
+      - [apt-get, update]
+      - [apt-get, install, qemu-guest-agent]
+      - [systemctl, start, qemu-guest-agent]
   users:
     - name: test
       groups: users, admin
