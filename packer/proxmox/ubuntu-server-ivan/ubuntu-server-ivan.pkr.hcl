@@ -78,7 +78,7 @@ source "proxmox" "ubuntu-server-ivan" {
     ssh_username = "sadmin"
     ssh_password = "${var.password}"
     ssh_private_key_file = "~/.ssh/cloud_init_rsa"
-    ssh_timeout = "20m"
+    ssh_timeout = "10m"
     
     # Block with boot commands
     boot_command = [
