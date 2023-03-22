@@ -56,7 +56,7 @@ source "proxmox" "centos-server-ivan" {
     # Hard Disk(s) VM
     scsi_controller = "virtio-scsi-pci"
     disks {
-      disk_size = "30G"
+      disk_size = "40G"
       format = "raw"
       storage_pool = "local-zfs"
       storage_pool_type = "zfs"

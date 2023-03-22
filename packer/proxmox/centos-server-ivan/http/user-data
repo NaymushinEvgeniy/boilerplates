@@ -18,35 +18,48 @@ network --bootproto=dhcp --device=link --activate
 network --hostname=centos-server
 # Root password
 rootpw $6$oP7npvuHbqQBaawM$fhB76s8DKf9UGu01Et0kLYsfTTridV7s/JTUg0/s0X4qAasavuzEHrNWfuhCvXiRgDBc5y0vwN7Vki7VcIFkL. --iscrypted
-# SELinux configuration
+# SELinux conf
 selinux --disabled
-# Do not configure the X Window System
+firewall --disabled
+# Disable X Window in build
 skipx
 # System timezone
 timezone Europe/Moscow
 # Default user
 user --groups=wheel --name=sadmin --password=$6$oP7npvuHbqQBaawM$fhB76s8DKf9UGu01Et0kLYsfTTridV7s/JTUg0/s0X4qAasavuzEHrNWfuhCvXiRgDBc5y0vwN7Vki7VcIFkL. --iscrypted --gecos="sadmin"
-# System bootloader configuration
+# Bootloader config
 bootloader --location=mbr --append="crashkernel=auto"
-# Clear the Master Boot Record
+# Clear mbr
 zerombr
 # Remove partitions
 clearpart --all --initlabel
-# Automatically create partitions using LVM
+# Partitions with LVM mode
 autopart --type=lvm
-# Reboot after successful installation
+# Reboot after install
 reboot
 
+# Packages
 %packages --ignoremissing
-# dnf group info minimal-environment
-@^qemu-guest-agent
+@^minimal-environment
+kexec-tools
 %end
 
-%post --nochroot --logfile=/mnt/sysimage/root/ks-post.log
-# Disable quiet boot and splash screen
+# Post install scripts
+%post
+exec < /dev/tty3 > /dev/tty3
+chvt 3
+echo
+echo "################################"
+echo "# Running Post Configuration   #"
+echo "################################"
+
+(
+/usr/bin/yum -y install drpm sudo qemu-guest-agent
+/usr/bin/yum -y update
 sed --follow-symlinks -i "s/ rhgb quiet//" /mnt/sysimage/etc/default/grub
 sed --follow-symlinks -i "s/ rhgb quiet//" /mnt/sysimage/boot/grub2/grubenv
-
-# Passwordless sudo for the user 'packer'
-echo "sadmin ALL=(ALL) NOPASSWD: ALL" >> /mnt/sysimage/etc/sudoers.d/packer
+# Passw sudo for default user
+echo "sadmin ALL=(ALL) NOPASSWD: ALL" >> /mnt/sysimage/etc/sudoers.d/sadmin
+) 2>&1 | /usr/bin/tee /var/log/post_install.log
+chvt 1
 %end
