@@ -14,6 +14,7 @@ password = "megasecret"
 ```
 
 Модифицируем конфиги под себя и проверяем:
+
 `packer validate -var-file="../credentials.pkr.hcl" centos-server-ivan.pkr.hcl`
 
 Если все ок - запускаем билд образа:
