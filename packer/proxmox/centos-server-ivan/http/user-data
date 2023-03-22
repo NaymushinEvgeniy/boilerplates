@@ -1,0 +1,52 @@
+# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/performing_an_advanced_rhel_installation/kickstart-commands-and-options-reference_installing-rhel-as-an-experienced-user
+
+# Apply lic
+eula --agreed
+# Cloud config
+url --url="https://mirror.yandex.ru/centos/8-stream/BaseOS/x86_64/os/"
+#repo --name="AppStream" --baseurl=http://mirror.yandex.ru/centos/8/BaseOS/x86_64/os/../../../AppStream/x86_64/os/
+# Mode install
+text
+# Disable Initial Setup on first boot
+firstboot --disable
+# Keyboard layout
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+# Network information
+network --bootproto=dhcp --device=link --activate
+network --hostname=centos-server
+# Root password
+rootpw $6$oP7npvuHbqQBaawM$fhB76s8DKf9UGu01Et0kLYsfTTridV7s/JTUg0/s0X4qAasavuzEHrNWfuhCvXiRgDBc5y0vwN7Vki7VcIFkL. --iscrypted
+# SELinux configuration
+selinux --disabled
+# Do not configure the X Window System
+skipx
+# System timezone
+timezone Europe/Moscow
+# Default user
+user --groups=wheel --name=sadmin --password=$6$oP7npvuHbqQBaawM$fhB76s8DKf9UGu01Et0kLYsfTTridV7s/JTUg0/s0X4qAasavuzEHrNWfuhCvXiRgDBc5y0vwN7Vki7VcIFkL. --iscrypted --gecos="sadmin"
+# System bootloader configuration
+bootloader --location=mbr --append="crashkernel=auto"
+# Clear the Master Boot Record
+zerombr
+# Remove partitions
+clearpart --all --initlabel
+# Automatically create partitions using LVM
+autopart --type=lvm
+# Reboot after successful installation
+reboot
+
+%packages --ignoremissing
+# dnf group info minimal-environment
+@^qemu-guest-agent
+%end
+
+%post --nochroot --logfile=/mnt/sysimage/root/ks-post.log
+# Disable quiet boot and splash screen
+sed --follow-symlinks -i "s/ rhgb quiet//" /mnt/sysimage/etc/default/grub
+sed --follow-symlinks -i "s/ rhgb quiet//" /mnt/sysimage/boot/grub2/grubenv
+
+# Passwordless sudo for the user 'packer'
+echo "sadmin ALL=(ALL) NOPASSWD: ALL" >> /mnt/sysimage/etc/sudoers.d/packer
+%end
