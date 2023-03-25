@@ -25,6 +25,9 @@ autoinstall:
     runcmd:
       - [apt-get, update]
       - [apt-get, install, qemu-guest-agent]
+      - [apt, autoremove]
+      - [apt, clean]
+      - [apt, autoclean]
       - [systemctl, enable, qemu-guest-agent]
       - [systemctl, start, qemu-guest-agent]
     users:

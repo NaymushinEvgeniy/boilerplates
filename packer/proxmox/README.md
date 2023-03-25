@@ -19,4 +19,4 @@ password = "megasecret"
 
 Если все ок - запускаем билд образа:
 
-`packer build -var-file="../credentials.pkr.hcl" ./centos-server-ivan.pkr.hcl`
+`packer build -var-file="../credentials.pkr.hcl" centos-server-ivan.pkr.hcl`

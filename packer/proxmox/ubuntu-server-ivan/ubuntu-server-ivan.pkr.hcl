@@ -95,5 +95,12 @@ source "proxmox" "ubuntu-server-ivan" {
 }
 
 build {
+  name = "ubuntu-server-ivan"
   sources = ["source.proxmox.ubuntu-server-ivan"]
+
+#  provisioner "shell" {
+#    inline = [
+#      "echo 'password' | sudo -S sh -c apt autoremove --purge"
+#    ]
+#  }
 }
