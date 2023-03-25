@@ -25,6 +25,8 @@ autoinstall:
     runcmd:
       - [apt-get, update]
       - [apt-get, install, qemu-guest-agent]
+      - [apt-get, install, net-tools]
+      - [apt-get, install, zsh]
       - [apt, autoremove]
       - [apt, clean]
       - [apt, autoclean]
